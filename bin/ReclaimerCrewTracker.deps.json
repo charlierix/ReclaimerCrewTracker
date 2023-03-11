@@ -1,0 +1,53 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "ReclaimerCrewTracker/1.0.0": {
+        "dependencies": {
+          "Game.Core": "1.0.0.0",
+          "Game.Math_WPF": "1.0.0.0"
+        },
+        "runtime": {
+          "ReclaimerCrewTracker.dll": {}
+        }
+      },
+      "Game.Core/1.0.0.0": {
+        "runtime": {
+          "Game.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Game.Math_WPF/1.0.0.0": {
+        "runtime": {
+          "Game.Math_WPF.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ReclaimerCrewTracker/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Game.Core/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Game.Math_WPF/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
