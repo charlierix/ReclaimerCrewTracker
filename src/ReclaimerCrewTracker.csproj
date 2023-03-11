@@ -16,4 +16,8 @@
     </Reference>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /Y &quot;$(TargetDir)&quot; &quot;$(SolutionDir)bin\*.*&quot;" />
+  </Target>
+
 </Project>
