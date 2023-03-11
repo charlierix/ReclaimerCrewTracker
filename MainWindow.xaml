@@ -1,0 +1,75 @@
+﻿<Window x:Class="ReclaimerCrewTracker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ReclaimerCrewTracker"
+        mc:Ignorable="d"
+        Title="Reclaimer Crew Tracker" ResizeMode="CanResizeWithGrip" Width="600" Height="700" Loaded="Window_Loaded">
+    <Grid Grid.IsSharedSizeScope="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto" SharedSizeGroup="amount"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" BorderThickness="1" CornerRadius="4" BorderBrush="{Binding RunningStatusBorder}" Background="{Binding RunningStatusBack}" Padding="4" MouseDown="PauseResumeOperation_Click">
+                <TextBlock HorizontalAlignment="Center" Text="{Binding RunningStatusText}" Foreground="{Binding RunningStatusFore}"/>
+            </Border>
+
+            <!-- Total Running Time -->
+            <TextBlock Grid.Column="2" Text="{Binding TotalTimeDisplay}" FontSize="18" VerticalAlignment="Center"/>
+            <Button Visibility="Collapsed" Grid.Column="4" Content="show times" Margin="12,0,0,0" Click="ShowTimes_Click"/>
+
+            <!-- Protection Percent -->
+            <StackPanel Grid.Column="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,30,0">
+                <StackPanel.ToolTip>
+                    <TextBlock>This can be used to give a reduced percent to the protection ships<LineBreak/><LineBreak/>You would only want to do this if there are multiple salvage ships<LineBreak/>protected at the same time</TextBlock>
+                </StackPanel.ToolTip>
+                <Label Content="protect %"/>
+                <TextBox x:Name="txtProtectPercent" MinWidth="40" VerticalContentAlignment="Center" Text="100" TextChanged="txtProtectPercent_TextChanged"/>
+            </StackPanel>
+
+            <!-- Sell Amount -->
+            <Label Grid.Column="6" Content="sell amount" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="7" x:Name="txtSellAmt" Text="" MinWidth="70" VerticalContentAlignment="Center" TextChanged="txtSellAmt_TextChanged"/>
+        </Grid>
+
+        <TabControl Grid.Row="2">
+            <TabItem Header="Salvage Crew" Background="#60B0813A">
+                <Border Background="#20B0813A" Margin="-2">
+                    <local:CrewControl x:Name="salvage"/>
+                </Border>
+            </TabItem>
+
+            <TabItem Header="Protection" Background="#603575A6">
+                <Border Background="#203575A6" Margin="-2">
+                    <local:CrewControl x:Name="protection"/>
+                </Border>
+            </TabItem>
+        </TabControl>
+
+        <!-- After Tax (MOTrader tax is 0.5%) -->
+        <Grid Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,8,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto" SharedSizeGroup="amount"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Content="after mo trader tax" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="1" Text="{Binding NetAmountDisplay}" VerticalAlignment="Center" Margin="2,0,0,0"/>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Game.Core">
+      <HintPath>lib\Game.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Game.Math_WPF">
+      <HintPath>lib\Game.Math_WPF.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
