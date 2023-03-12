@@ -10,7 +10,7 @@
             <RowDefinition Height="2"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Add" Click="Add_Click"/>
+        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Add" Padding="3,1" Click="Add_Click"/>
 
         <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding Members}">
