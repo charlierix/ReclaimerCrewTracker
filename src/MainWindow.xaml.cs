@@ -83,10 +83,12 @@ namespace ReclaimerCrewTracker
             {
                 _salvage = new Crew() { Parent = this };
                 _salvage.ComboBoxTouched += ComboBoxTouched;
+                _salvage.TimeAdjustmentTouched += TimeAdjustmentTouched;
                 salvage.DataContext = _salvage;
 
                 _protection = new Crew() { Parent = this };
                 _protection.ComboBoxTouched += ComboBoxTouched;
+                _protection.TimeAdjustmentTouched += TimeAdjustmentTouched;
                 protection.DataContext = _protection;
 
                 txtProtectPercent_TextChanged(this, null);
@@ -194,6 +196,20 @@ namespace ReclaimerCrewTracker
                     ToArray();
 
                 SaveNames(names);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void TimeAdjustmentTouched(object? sender, EventArgs e)
+        {
+            try
+            {
+                if (!_initialized)
+                    return;
+
+                RefreshVisuals();
             }
             catch (Exception ex)
             {

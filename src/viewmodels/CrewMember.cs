@@ -23,6 +23,12 @@ namespace ReclaimerCrewTracker.viewmodels
             ComboBoxTouched?.Invoke(this, EventArgs.Empty);
         }
 
+        public event EventHandler TimeAdjustmentTouched = null;
+        public void OnTimeAdjustmentTouched()
+        {
+            TimeAdjustmentTouched?.Invoke(this, EventArgs.Empty);
+        }
+
         public CrewMember()
         {
             InOutTimes = new ObservableCollection<DateTime>();
@@ -120,6 +126,8 @@ namespace ReclaimerCrewTracker.viewmodels
             foreach (var span in times_intersect)
                 total = total.Add(span.To - span.From);
 
+            total = total.Add(TimeSpan.FromMinutes(RuntimeAdjustmentMinutes));
+
             TotalTimeSeconds = total.TotalSeconds;
             TotalTimeDisplay = Utility.TimeSpanToString(total);
         }
@@ -173,6 +181,30 @@ namespace ReclaimerCrewTracker.viewmodels
         }
 
         public bool ShowTimes = false;
+
+        // ------------- Runtime Adjustment -------------
+
+        public int RuntimeAdjustmentMinutes
+        {
+            get { return (int)GetValue(RuntimeAdjustmentMinutesProperty); }
+            set { SetValue(RuntimeAdjustmentMinutesProperty, value); }
+        }
+        public static readonly DependencyProperty RuntimeAdjustmentMinutesProperty = DependencyProperty.Register("RuntimeAdjustmentMinutes", typeof(int), typeof(CrewMember), new PropertyMetadata(0, OnRuntimeAdjustmentMinutesChanged));
+
+        private static void OnRuntimeAdjustmentMinutesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            CrewMember obj = (CrewMember)d;
+            obj.RuntimeAdjustmentMinutesDisplay = Utility.TimeSpanToString(TimeSpan.FromMinutes(obj.RuntimeAdjustmentMinutes), report_seconds: false);
+
+            obj.OnTimeAdjustmentTouched();
+        }
+
+        public string RuntimeAdjustmentMinutesDisplay
+        {
+            get { return (string)GetValue(RuntimeAdjustmentMinutesDisplayProperty); }
+            set { SetValue(RuntimeAdjustmentMinutesDisplayProperty, value); }
+        }
+        public static readonly DependencyProperty RuntimeAdjustmentMinutesDisplayProperty = DependencyProperty.Register("RuntimeAdjustmentMinutesDisplay", typeof(string), typeof(CrewMember), new PropertyMetadata("0"));
 
         // ------------- Amount -------------
 

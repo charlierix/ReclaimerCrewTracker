@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /Y &quot;$(TargetDir)&quot; &quot;$(SolutionDir)bin\*.*&quot;" />
+    <Exec Command="xcopy /Y &quot;$(TargetDir)&quot; &quot;$(SolutionDir)bin\*.*&quot;&#xD;&#xA;del &quot;$(SolutionDir)bin\names.json&quot;" />
   </Target>
 
 </Project>

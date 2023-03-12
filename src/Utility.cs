@@ -1,4 +1,5 @@
-﻿using ReclaimerCrewTracker.models;
+﻿using Game.Math_WPF.Mathematics;
+using ReclaimerCrewTracker.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,34 +44,57 @@ namespace ReclaimerCrewTracker
             return retVal.ToArray();
         }
 
-        public static string TimeSpanToString(TimeSpan span, bool report_milliseconds = false)
+        public static string TimeSpanToString(TimeSpan span, bool report_seconds = true, bool report_milliseconds = false)
         {
             if (span == TimeSpan.Zero)
                 return "0";
 
             string retVal = "";
 
-            if (span.TotalHours >= 1)
-            {
-                retVal = $"{span.Hours}:{span.Minutes:00}:{span.Seconds:00}";
-            }
-            else if (span.TotalMinutes >= 1)
-            {
-                retVal = span.Seconds == 60 ?
-                    "1:00" :
-                    $"{span.Minutes}:{span.Seconds:00}";
+            TimeSpan span_pos = span.TotalSeconds >= 0 ?
+                span :
+                span.Negate();
 
-            }
-            else if (span.TotalSeconds >= 1)
+            if (span_pos.TotalHours >= 1)
             {
-                retVal = Convert.ToInt32(span.TotalSeconds).ToString();        // don't bother with milliseconds
+                retVal = report_seconds ?
+                    $"{span_pos.Hours}:{span_pos.Minutes:00}:{span_pos.Seconds:00}" :
+                    $"{span_pos.Hours}:{span_pos.Minutes:00}";
+
+                if (span_pos.TotalDays >= 1)
+                    retVal = string.Format("{0} day{1} - {2} hours", Math.Floor(span_pos.TotalDays), (span_pos.TotalDays >= 2) ? "s" : "", retVal);
+            }
+            else if (span_pos.TotalMinutes >= 1)
+            {
+                if (report_seconds)
+                {
+                    retVal = span_pos.TotalSeconds.IsNearValue(60) ?
+                        "1:00" :
+                        $"{span_pos.Minutes}:{span_pos.Seconds:00}";
+                }
+                else
+                {
+                    retVal = span_pos.TotalSeconds.IsNearValue(60) ?
+                        "1" :
+                        $"{span_pos.Minutes}";
+                }
+            }
+            else if (span_pos.TotalSeconds >= 1)
+            {
+                // don't bother with milliseconds
+                retVal = report_seconds ?
+                    Convert.ToInt32(span_pos.TotalSeconds).ToString() :
+                    "0";
             }
             else
             {
                 retVal = report_milliseconds ?
-                    Convert.ToInt32(span.TotalMilliseconds).ToString("000") :
+                    Convert.ToInt32(span_pos.TotalMilliseconds).ToString("000") :
                     "0";
             }
+
+            if (span.TotalSeconds < 0)
+                retVal = "-" + retVal;
 
             return retVal;
         }
@@ -101,7 +125,7 @@ namespace ReclaimerCrewTracker
                 if (parent.From > span.From)
                     span = span with { From = parent.From };        // parent clips start of span
 
-                if(parent.To >= span.To)
+                if (parent.To >= span.To)
                 {
                     retVal.Add(span);
                     break;      // entire span can go
