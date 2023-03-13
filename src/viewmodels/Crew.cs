@@ -27,6 +27,7 @@ namespace ReclaimerCrewTracker.viewmodels
 
             member.ComboBoxTouched += Member_ComboBoxTouched;
             member.TimeAdjustmentTouched += Member_TimeAdjustmentTouched;
+            member.RequestDelete += Member_RequestDelete;
 
             Members.Add(member);
         }
@@ -52,6 +53,17 @@ namespace ReclaimerCrewTracker.viewmodels
         private void Member_TimeAdjustmentTouched(object? sender, EventArgs e)
         {
             TimeAdjustmentTouched?.Invoke(sender, e);
+        }
+        private void Member_RequestDelete(object? sender, EventArgs e)
+        {
+            if (sender is CrewMember member)
+            {
+                Members.Remove(member);
+            }
+            else
+            {
+                throw new ApplicationException($"Sender is not CrewMember: {sender?.GetType().ToString() ?? "null"}");
+            }
         }
     }
 }

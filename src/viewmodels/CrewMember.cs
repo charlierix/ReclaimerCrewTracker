@@ -29,6 +29,12 @@ namespace ReclaimerCrewTracker.viewmodels
             TimeAdjustmentTouched?.Invoke(this, EventArgs.Empty);
         }
 
+        public event EventHandler RequestDelete = null;
+        public void OnRequestDelete()
+        {
+            RequestDelete?.Invoke(this, EventArgs.Empty);
+        }
+
         public CrewMember()
         {
             InOutTimes = new ObservableCollection<DateTime>();

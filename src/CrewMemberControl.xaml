@@ -62,6 +62,7 @@
                     <RowDefinition Height="4"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
                 <!-- Elapsed Time -->
@@ -102,6 +103,11 @@
                         <Button Grid.Column="4" Content="+15" ToolTip="add 15 minutes" Margin="1,0,0,0" Style="{StaticResource addremoveButton}"/>
                     </Grid>
                 </Grid>
+
+                <StackPanel Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <!--<Button Content="clone" Click="Clone_Click"/>-->
+                    <Button Content="delete" Click="Delete_Click"/>
+                </StackPanel>
             </Grid>
         </Grid>
     </Border>
