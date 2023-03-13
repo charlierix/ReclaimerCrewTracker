@@ -54,8 +54,8 @@
                 </Border>
             </TabItem>
 
-            <TabItem Header="Protection" Background="#603575A6">
-                <Border Background="#203575A6" Margin="-2">
+            <TabItem Header="Protection" Background="#60466C8A">
+                <Border Background="#20466C8A" Margin="-2">
                     <local:CrewControl x:Name="protection"/>
                 </Border>
             </TabItem>

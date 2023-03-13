@@ -5,6 +5,31 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ReclaimerCrewTracker">
     <UserControl.Resources>
+        <Style x:Key="addremoveButton" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="addremoveButton_border" BorderBrush="#60E0E0E0" BorderThickness="1" CornerRadius="4" Background="#40FFFFFF" Padding="{TemplateBinding Padding}">
+                            <TextBlock x:Name="addremoveButton_text" Text="{TemplateBinding Content}" Foreground="#80606060" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="addremoveButton_border" Property="BorderBrush" Value="#68E0E0E0"/>
+                                <Setter TargetName="addremoveButton_border" Property="Background" Value="#B0FFFFFF"/>
+                                <Setter TargetName="addremoveButton_text" Property="Foreground" Value="#C0798668"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter TargetName="addremoveButton_border" Property="BorderBrush" Value="#C0E0E0E0"/>
+                                <Setter TargetName="addremoveButton_border" Property="Background" Value="#FFFFFF"/>
+                                <Setter TargetName="addremoveButton_text" Property="Foreground" Value="#83946C"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </UserControl.Resources>
 
@@ -17,8 +42,10 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
+            <!-- Name -->
             <ComboBox Grid.Row="0" Text="{Binding Name}" ItemsSource="{Binding NamesList, RelativeSource={RelativeSource AncestorType=local:MainWindow}}" IsEditable="True" HorizontalAlignment="Stretch" LostFocus="ComboBox_LostFocus"/>
 
+            <!-- Running Toggle -->
             <Border Grid.Row="1" BorderThickness="1" CornerRadius="4" BorderBrush="{Binding StatusBorder}" Background="{Binding StatusBack}" HorizontalAlignment="Stretch" Padding="4" Margin="0,8" MouseDown="ClockInOut_Click">
                 <TextBlock HorizontalAlignment="Center" Text="{Binding StatusText}" Foreground="{Binding StatusFore}"/>
             </Border>
@@ -37,12 +64,15 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
+                <!-- Elapsed Time -->
                 <TextBlock Grid.Column="0" Grid.Row="0" Text="time" FontSize="9" Foreground="#808080" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding TotalTimeDisplay}" HorizontalAlignment="Left"/>
 
+                <!-- Money -->
                 <TextBlock Grid.Column="0" Grid.Row="2" Text="uec" FontSize="9" Foreground="#808080" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding AmountDisplay}" FontSize="16" HorizontalAlignment="Left"/>
 
+                <!-- Time Adjustment -->
                 <Grid Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="3" Margin="0,16,0,0" Visibility="{Binding Path=IsMouseOver, ElementName=parentBorder, Converter={StaticResource BoolToVis}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -54,7 +84,7 @@
                     </Grid.RowDefinitions>
 
                     <Label Grid.Column="0" Grid.Row="0" Content="adjust time (minutes)"/>
-                    <Button Grid.Column="1" Grid.Row="0" Content="0" VerticalAlignment="Center" Padding="6,0" Click="ResetTimeAdjust_Click"/>
+                    <Button Grid.Column="1" Grid.Row="0" Content="0" ToolTip="reset" VerticalAlignment="Center" Padding="7,1" Style="{StaticResource addremoveButton}" Click="ResetTimeAdjust_Click"/>
 
                     <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Stretch" Button.Click="TimeAdjust_Click">
                         <Grid.ColumnDefinitions>
@@ -65,11 +95,11 @@
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Grid.Column="0" Content="-15" Margin="0,0,1,0"/>
-                        <Button Grid.Column="1" Content="-1" Margin="1,0,0,0"/>
+                        <Button Grid.Column="0" Content="-15" ToolTip="subtract 15 minutes" Margin="0,0,1,0" Style="{StaticResource addremoveButton}"/>
+                        <Button Grid.Column="1" Content="-1" ToolTip="subtract 1 minute" Margin="1,0,0,0" Style="{StaticResource addremoveButton}"/>
                         <TextBlock Grid.Column="2" Text="{Binding RuntimeAdjustmentMinutesDisplay}" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4,0"/>
-                        <Button Grid.Column="3" Content="+1" Margin="0,0,1,0"/>
-                        <Button Grid.Column="4" Content="+15" Margin="1,0,0,0"/>
+                        <Button Grid.Column="3" Content="+1" ToolTip="add 1 minute" Margin="0,0,1,0" Style="{StaticResource addremoveButton}"/>
+                        <Button Grid.Column="4" Content="+15" ToolTip="add 15 minutes" Margin="1,0,0,0" Style="{StaticResource addremoveButton}"/>
                     </Grid>
                 </Grid>
             </Grid>
