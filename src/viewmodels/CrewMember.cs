@@ -29,6 +29,12 @@ namespace ReclaimerCrewTracker.viewmodels
             TimeAdjustmentTouched?.Invoke(this, EventArgs.Empty);
         }
 
+        public event EventHandler RequestClone = null;
+        public void OnRequestClone()
+        {
+            RequestClone?.Invoke(this, EventArgs.Empty);
+        }
+
         public event EventHandler RequestDelete = null;
         public void OnRequestDelete()
         {

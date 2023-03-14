@@ -105,7 +105,7 @@
                 </Grid>
 
                 <StackPanel Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <!--<Button Content="clone" Click="Clone_Click"/>-->
+                    <Button Content="clone" Click="Clone_Click"/>
                     <Button Content="delete" Click="Delete_Click"/>
                 </StackPanel>
             </Grid>

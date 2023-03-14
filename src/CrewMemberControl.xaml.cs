@@ -106,7 +106,18 @@ namespace ReclaimerCrewTracker
 
         private void Clone_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                var viewmodel = DataContext as CrewMember;
+                if (viewmodel == null)
+                    return;
 
+                viewmodel.OnRequestClone();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
