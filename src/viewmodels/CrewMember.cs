@@ -196,6 +196,13 @@ namespace ReclaimerCrewTracker.viewmodels
 
         // ------------- Should Show Extras -------------
 
+        public bool ShouldShowArrow
+        {
+            get { return (bool)GetValue(ShouldShowArrowProperty); }
+            set { SetValue(ShouldShowArrowProperty, value); }
+        }
+        public static readonly DependencyProperty ShouldShowArrowProperty = DependencyProperty.Register("ShouldShowArrow", typeof(bool), typeof(CrewMember), new PropertyMetadata(false));
+
         public bool ShouldShowExtras
         {
             get { return (bool)GetValue(ShouldShowExtrasProperty); }

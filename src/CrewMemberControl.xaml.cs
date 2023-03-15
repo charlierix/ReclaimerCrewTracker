@@ -60,6 +60,36 @@ namespace ReclaimerCrewTracker
             }
         }
 
+        private void arrowTriggerVolume_MouseEnter(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                var viewmodel = DataContext as CrewMember;
+                if (viewmodel == null)
+                    return;
+
+                viewmodel.ShouldShowArrow = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void arrowTriggerVolume_MouseLeave(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                var viewmodel = DataContext as CrewMember;
+                if (viewmodel == null)
+                    return;
+
+                viewmodel.ShouldShowArrow = false || viewmodel.ShouldShowExtras;        // if they opened the extras panel, then leave the arrow showing
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         private void Ellipse_MouseMove(object sender, MouseEventArgs e)
         {
             try
@@ -69,6 +99,7 @@ namespace ReclaimerCrewTracker
                     return;
 
                 viewmodel.ShouldShowExtras = true;
+                viewmodel.ShouldShowArrow = true;       // ellipse covers arrow trigger volume
             }
             catch (Exception ex)
             {
@@ -84,6 +115,7 @@ namespace ReclaimerCrewTracker
                     return;
 
                 viewmodel.ShouldShowExtras = false;
+                viewmodel.ShouldShowArrow = false;
             }
             catch (Exception ex)
             {
