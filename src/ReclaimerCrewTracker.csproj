@@ -8,12 +8,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="resources\down_arrow.png" />
+    <None Remove="resources\down_arrow_small.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Game.Core">
       <HintPath>lib\Game.Core.dll</HintPath>
     </Reference>
     <Reference Include="Game.Math_WPF">
       <HintPath>lib\Game.Math_WPF.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="resources\down_arrow.png" />
+    <Resource Include="resources\down_arrow_small.png" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

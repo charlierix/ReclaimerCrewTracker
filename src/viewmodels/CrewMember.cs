@@ -194,6 +194,15 @@ namespace ReclaimerCrewTracker.viewmodels
 
         public bool ShowTimes = false;
 
+        // ------------- Should Show Extras -------------
+
+        public bool ShouldShowExtras
+        {
+            get { return (bool)GetValue(ShouldShowExtrasProperty); }
+            set { SetValue(ShouldShowExtrasProperty, value); }
+        }
+        public static readonly DependencyProperty ShouldShowExtrasProperty = DependencyProperty.Register("ShouldShowExtras", typeof(bool), typeof(CrewMember), new PropertyMetadata(false));
+
         // ------------- Runtime Adjustment -------------
 
         public int RuntimeAdjustmentMinutes

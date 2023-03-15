@@ -60,6 +60,37 @@ namespace ReclaimerCrewTracker
             }
         }
 
+        private void Ellipse_MouseMove(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                var viewmodel = DataContext as CrewMember;
+                if (viewmodel == null)
+                    return;
+
+                viewmodel.ShouldShowExtras = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void parentBorder_MouseLeave(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                var viewmodel = DataContext as CrewMember;
+                if (viewmodel == null)
+                    return;
+
+                viewmodel.ShouldShowExtras = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void ResetTimeAdjust_Click(object sender, RoutedEventArgs e)
         {
             try
