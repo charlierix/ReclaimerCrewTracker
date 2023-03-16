@@ -10,7 +10,11 @@
   <ItemGroup>
     <None Remove="resources\button.png" />
     <None Remove="resources\clone.png" />
+    <None Remove="resources\clone_128.png" />
+    <None Remove="resources\clone_64.png" />
     <None Remove="resources\delete.png" />
+    <None Remove="resources\delete_128.png" />
+    <None Remove="resources\delete_64.png" />
     <None Remove="resources\down_arrow.png" />
     <None Remove="resources\down_arrow_small.png" />
   </ItemGroup>
@@ -27,7 +31,11 @@
   <ItemGroup>
     <Resource Include="resources\button.png" />
     <Resource Include="resources\clone.png" />
+    <Resource Include="resources\clone_128.png" />
+    <Resource Include="resources\clone_64.png" />
     <Resource Include="resources\delete.png" />
+    <Resource Include="resources\delete_128.png" />
+    <Resource Include="resources\delete_64.png" />
     <Resource Include="resources\down_arrow.png" />
     <Resource Include="resources\down_arrow_small.png" />
   </ItemGroup>

@@ -35,8 +35,9 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Grid>
-                            <Image Width="42" Height="42" Source="/resources/button.png" />
-                            <Image Width="42" Height="42" Source="/resources/clone.png" />
+                            <!-- This button image is too light and busy.  Just use a border that's invisible until mouse over and click -->
+                            <!--<Image Width="42" Height="42" Source="/resources/button.png" />-->
+                            <Image Width="42" Height="42" Source="/resources/clone_64.png" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -48,8 +49,8 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Grid>
-                            <Image Width="42" Height="42" Source="/resources/button.png" />
-                            <Image Width="42" Height="42" Source="/resources/delete.png" />
+                            <!--<Image Width="42" Height="42" Source="/resources/button.png" />-->
+                            <Image Width="38" Height="38" Source="/resources/delete_64.png" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -102,6 +103,11 @@
                 <Image Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Stretch="None" Opacity="0.33" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/resources/down_arrow_small.png" Margin="0,-20,2,-11" Visibility="{Binding ShouldShowArrow, Converter={StaticResource BoolToVis}}"/>
                 <Rectangle Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" x:Name="arrowTriggerVolume" Fill="Transparent" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="24" Height="48" Margin="0,-20,2,-11" MouseEnter="arrowTriggerVolume_MouseEnter" MouseLeave="arrowTriggerVolume_MouseLeave"/>
                 <Ellipse Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Width="12" Height="18" Fill="Transparent" Stroke="Transparent" StrokeThickness="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,-12,2,-8" Visibility="{Binding Path=IsMouseOver, ElementName=parentBorder, Converter={StaticResource BoolToVis}}" MouseEnter="Ellipse_MouseMove" MouseMove="Ellipse_MouseMove"/>
+                
+                
+                <!-- TODO: this grid going visible to the parent to resize.  When there's no more room and the scrollbar is showing, this causes stuff to jump -->
+                <!-- This extras panel should be a popup -->
+
                 
                 <Grid Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="3" Margin="0,16,0,0" Visibility="{Binding ShouldShowExtras, Converter={StaticResource BoolToVis}}">
                     <Grid.RowDefinitions>
