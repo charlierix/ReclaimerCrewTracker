@@ -49,13 +49,13 @@
 
         <TabControl Grid.Row="2">
             <TabItem Header="Salvage Crew" Background="#60B0813A">
-                <Border Background="#20B0813A" Margin="-2">
+                <Border Background="{Binding SalvageBackground}" Margin="-2">
                     <local:CrewControl x:Name="salvage"/>
                 </Border>
             </TabItem>
 
             <TabItem Header="Protection" Background="#60466C8A">
-                <Border Background="#20466C8A" Margin="-2">
+                <Border Background="{Binding ProtectionBackground}" Margin="-2">
                     <local:CrewControl x:Name="protection"/>
                 </Border>
             </TabItem>

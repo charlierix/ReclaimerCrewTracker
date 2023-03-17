@@ -82,11 +82,15 @@ namespace ReclaimerCrewTracker
             try
             {
                 _salvage = new Crew() { Parent = this };
+                SalvageBackground = UtilityWPF.BrushFromHex("F5EFE6");      // can't have transparency, because the popup uses this color, and dual transparents look wrong
+                _salvage.TabColor = SalvageBackground;
                 _salvage.ComboBoxTouched += ComboBoxTouched;
                 _salvage.TimeAdjustmentTouched += TimeAdjustmentTouched;
                 salvage.DataContext = _salvage;
 
                 _protection = new Crew() { Parent = this };
+                ProtectionBackground = UtilityWPF.BrushFromHex("E8EDF0");
+                _protection.TabColor = ProtectionBackground;
                 _protection.ComboBoxTouched += ComboBoxTouched;
                 _protection.TimeAdjustmentTouched += TimeAdjustmentTouched;
                 protection.DataContext = _protection;
@@ -216,6 +220,22 @@ namespace ReclaimerCrewTracker
                 MessageBox.Show(ex.Message, Title, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        // ------------- TabColors -------------
+
+        public Brush SalvageBackground
+        {
+            get { return (Brush)GetValue(SalvageBackgroundProperty); }
+            set { SetValue(SalvageBackgroundProperty, value); }
+        }
+        public static readonly DependencyProperty SalvageBackgroundProperty = DependencyProperty.Register("SalvageBackground", typeof(Brush), typeof(MainWindow), new PropertyMetadata(Brushes.Transparent));
+
+        public Brush ProtectionBackground
+        {
+            get { return (Brush)GetValue(ProtectionBackgroundProperty); }
+            set { SetValue(ProtectionBackgroundProperty, value); }
+        }
+        public static readonly DependencyProperty ProtectionBackgroundProperty = DependencyProperty.Register("ProtectionBackground", typeof(Brush), typeof(MainWindow), new PropertyMetadata(Brushes.Transparent));
 
         // ------------- StartStop / Running|Stopped -------------
 

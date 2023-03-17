@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Xaml;
 
 namespace ReclaimerCrewTracker.viewmodels
@@ -21,6 +22,13 @@ namespace ReclaimerCrewTracker.viewmodels
         public MainWindow Parent { get; set; }
 
         public ObservableCollection<CrewMember> Members { get; private set; } = new ObservableCollection<CrewMember>();
+
+        public Brush TabColor
+        {
+            get { return (Brush)GetValue(TabColorProperty); }
+            set { SetValue(TabColorProperty, value); }
+        }
+        public static readonly DependencyProperty TabColorProperty = DependencyProperty.Register("TabColor", typeof(Brush), typeof(Crew), new PropertyMetadata(Brushes.Transparent));
 
         public void AddCrew()
         {

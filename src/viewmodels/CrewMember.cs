@@ -203,13 +203,6 @@ namespace ReclaimerCrewTracker.viewmodels
         }
         public static readonly DependencyProperty ShouldShowArrowProperty = DependencyProperty.Register("ShouldShowArrow", typeof(bool), typeof(CrewMember), new PropertyMetadata(false));
 
-        public bool ShouldShowExtras
-        {
-            get { return (bool)GetValue(ShouldShowExtrasProperty); }
-            set { SetValue(ShouldShowExtrasProperty, value); }
-        }
-        public static readonly DependencyProperty ShouldShowExtrasProperty = DependencyProperty.Register("ShouldShowExtras", typeof(bool), typeof(CrewMember), new PropertyMetadata(false));
-
         // ------------- Runtime Adjustment -------------
 
         public int RuntimeAdjustmentMinutes

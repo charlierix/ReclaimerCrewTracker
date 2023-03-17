@@ -20,6 +20,7 @@ namespace ReclaimerCrewTracker
     public partial class CrewMemberControl : UserControl
     {
         private const string TITLE = "CrewMemberControl";
+        private bool _entered_popup = false;
 
         public event EventHandler ComboBoxTouched = null;
 
@@ -83,7 +84,7 @@ namespace ReclaimerCrewTracker
                 if (viewmodel == null)
                     return;
 
-                viewmodel.ShouldShowArrow = false || viewmodel.ShouldShowExtras;        // if they opened the extras panel, then leave the arrow showing
+                viewmodel.ShouldShowArrow = false || arrowTriggerVolume.IsMouseOver;
             }
             catch (Exception ex)
             {
@@ -98,8 +99,15 @@ namespace ReclaimerCrewTracker
                 if (viewmodel == null)
                     return;
 
-                viewmodel.ShouldShowExtras = true;
                 viewmodel.ShouldShowArrow = true;       // ellipse covers arrow trigger volume
+
+                //popupExtras.VerticalOffset = popupExtras.ActualHeight / 2;      //NOTE: the very first time, the height will be zero, but this is on mouse move of the trigger volume, so it will get called again
+                popupExtras.VerticalOffset = popupExtras.Child.RenderSize.Height / 2;
+
+                _entered_popup = false;
+
+                popupExtras.IsOpen = true;
+
             }
             catch (Exception ex)
             {
@@ -114,8 +122,40 @@ namespace ReclaimerCrewTracker
                 if (viewmodel == null)
                     return;
 
-                viewmodel.ShouldShowExtras = false;
                 viewmodel.ShouldShowArrow = false;
+
+                if (!_entered_popup && !popupExtras.IsMouseOver)
+                {
+                    popupExtras.IsOpen = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void popupExtras_MouseEnter(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                _entered_popup = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void popupExtras_MouseLeave(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                var viewmodel = DataContext as CrewMember;
+                if (viewmodel == null)
+                    return;
+
+                viewmodel.ShouldShowArrow = false;
+
+                popupExtras.IsOpen = false;
             }
             catch (Exception ex)
             {
@@ -147,7 +187,7 @@ namespace ReclaimerCrewTracker
                 if (viewmodel == null)
                     return;
 
-                if(e.OriginalSource is Button button)
+                if (e.OriginalSource is Button button)
                 {
                     string button_text = (button.Content as string) ?? "";
 
@@ -155,7 +195,7 @@ namespace ReclaimerCrewTracker
                     //if (!match.Success)
                     //    throw new ApplicationException($"Couldn't parse button text: {button_text}");
 
-                    if(!int.TryParse(button_text, out int delta))
+                    if (!int.TryParse(button_text, out int delta))
                         throw new ApplicationException($"Couldn't parse button text: {button_text}");
 
                     viewmodel.RuntimeAdjustmentMinutes += delta;
