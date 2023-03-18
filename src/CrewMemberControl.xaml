@@ -35,11 +35,24 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid>
-                            <!-- This button image is too light and busy.  Just use a border that's invisible until mouse over and click -->
-                            <!--<Image Width="42" Height="42" Source="/resources/button.png" />-->
-                            <Image Width="42" Height="42" Source="/resources/clone_64.png" />
-                        </Grid>
+                        <Border x:Name="cloneButton_border" CornerRadius="4" BorderThickness="1" Background="Transparent" BorderBrush="Transparent" Margin="2">
+                            <Image x:Name="cloneButton_image" Width="42" Height="42" Opacity="0.75" Source="/resources/clone_gray_64.png" />
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="cloneButton_image" Property="Source" Value="/resources/clone_halfcolor_64.png"/>
+                                <Setter TargetName="cloneButton_image" Property="Opacity" Value="0.85"/>
+                                <Setter TargetName="cloneButton_border" Property="Background" Value="#2898AAB8"/>
+                                <Setter TargetName="cloneButton_border" Property="BorderBrush" Value="#4083929E"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter TargetName="cloneButton_image" Property="Source" Value="/resources/clone_64.png"/>
+                                <Setter TargetName="cloneButton_image" Property="Opacity" Value="1"/>
+                                <Setter TargetName="cloneButton_border" Property="Background" Value="#387B9DB8"/>
+                                <Setter TargetName="cloneButton_border" Property="BorderBrush" Value="#506A879E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -49,10 +62,24 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid>
-                            <!--<Image Width="42" Height="42" Source="/resources/button.png" />-->
-                            <Image Width="38" Height="38" Source="/resources/delete_64.png" />
-                        </Grid>
+                        <Border x:Name="deleteButton_border" CornerRadius="4" BorderThickness="1" Background="Transparent" BorderBrush="Transparent" Margin="2">
+                            <Image x:Name="deleteButton_image" Width="38" Height="38" Opacity="0.75" Source="/resources/delete_64.png" />
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="deleteButton_image" Property="Source" Value="/resources/delete_halfcolor_64.png"/>
+                                <Setter TargetName="deleteButton_image" Property="Opacity" Value="0.85"/>
+                                <Setter TargetName="deleteButton_border" Property="Background" Value="#2898AAB8"/>
+                                <Setter TargetName="deleteButton_border" Property="BorderBrush" Value="#4083929E"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter TargetName="deleteButton_image" Property="Source" Value="/resources/delete_fullcolor_64.png"/>
+                                <Setter TargetName="deleteButton_image" Property="Opacity" Value="1"/>
+                                <Setter TargetName="deleteButton_border" Property="Background" Value="#387B9DB8"/>
+                                <Setter TargetName="deleteButton_border" Property="BorderBrush" Value="#506A879E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -61,7 +88,6 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </UserControl.Resources>
 
-    <!--<Border BorderThickness="1" BorderBrush="#20606060" Margin="4" Padding="4" CornerRadius="4">-->
     <Border x:Name="parentBorder" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" Margin="4" Padding="4" CornerRadius="4" MouseLeave="parentBorder_MouseLeave">
         <Grid>
             <Grid.RowDefinitions>
@@ -113,6 +139,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
+                            <RowDefinition Height="4"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
 
@@ -148,7 +175,7 @@
                         </Grid>
 
                         <!-- Clone/Delete -->
-                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
                             <Button ToolTip="clone" Click="Clone_Click" Style="{StaticResource cloneButton}"/>
                             <Button ToolTip="delete" Click="Delete_Click" Style="{StaticResource deleteButton}"/>
                         </StackPanel>
