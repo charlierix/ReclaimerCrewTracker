@@ -45,6 +45,7 @@
             <!-- Sell Amount -->
             <Label Grid.Column="6" Content="sell amount" VerticalAlignment="Center"/>
             <TextBox Grid.Column="7" x:Name="txtSellAmt" Text="" MinWidth="70" VerticalContentAlignment="Center" TextChanged="txtSellAmt_TextChanged"/>
+            <TextBlock Grid.Column="7" Visibility="Collapsed" x:Name="lblSellAmt" Text="" MinWidth="70" VerticalAlignment="Center"/>
         </Grid>
 
         <TabControl Grid.Row="2">
@@ -57,6 +58,12 @@
             <TabItem Header="Protection" Background="#60466C8A">
                 <Border Background="{Binding ProtectionBackground}" Margin="-2">
                     <local:CrewControl x:Name="protection"/>
+                </Border>
+            </TabItem>
+
+            <TabItem Header="Calculations">
+                <Border Background="{Binding CalculationsBackground}" Margin="-2">
+                    <local:CalculationsControl x:Name="calculations"/>
                 </Border>
             </TabItem>
         </TabControl>

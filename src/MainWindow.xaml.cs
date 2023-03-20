@@ -33,6 +33,7 @@ namespace ReclaimerCrewTracker
 
         private Crew _salvage = null;
         private Crew _protection = null;
+        private Calculations _calculations = null;
 
         private DispatcherTimer _timer;
 
@@ -51,7 +52,14 @@ namespace ReclaimerCrewTracker
             StartStopTimes = new ObservableCollection<DateTime>();
             StartStopTimes.CollectionChanged += StartStopTimes_CollectionChanged;
 
-            //StartStopTimes.Add(DateTime.UtcNow);      // maybe start in a running state?  I have a feeling this will be missed, but if it starts in a running state, the owner will get an inflated percent until they add crew
+            // Maybe start in a running state?
+            //
+            // I have a feeling this will be missed, but if it starts in a running state, the owner will get an inflated percent until
+            // they add crew
+            //
+            // Also, they may want to add crew, then start the timer.  Otherwise the divided amounts will be slightly different, which
+            // is annoying
+            //StartStopTimes.Add(DateTime.UtcNow);      
             StartStopTimes_CollectionChanged(this, null);
 
             NamesList = new ObservableCollection<string>();
@@ -95,6 +103,11 @@ namespace ReclaimerCrewTracker
                 _protection.TimeAdjustmentTouched += TimeAdjustmentTouched;
                 protection.DataContext = _protection;
 
+                _calculations = new Calculations();
+                _calculations.CalculationChanged += Calculations_CalculationChanged;
+                CalculationsBackground = new SolidColorBrush(UtilityWPF.AlphaBlend(SystemColors.WindowColor, SystemColors.ControlColor, 0.33));
+                calculations.DataContext = _calculations;
+
                 txtProtectPercent_TextChanged(this, null);
             }
             catch (Exception ex)
@@ -134,20 +147,21 @@ namespace ReclaimerCrewTracker
                 if (!_initialized)
                     return;
 
-                if (decimal.TryParse(txtSellAmt.Text, out decimal amount))
-                {
-                    NetAmount = amount * 0.995m;
-                    txtSellAmt.Effect = null;
-                }
-                else
-                {
-                    NetAmount = 0m;
-                    txtSellAmt.Effect = _errorEffect;
-                }
+                RefreshSellAmount();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void Calculations_CalculationChanged(object? sender, EventArgs e)
+        {
+            try
+            {
+                if (!_initialized)
+                    return;
 
-                NetAmountDisplay = NetAmount.ToString("N0");
-
-                RefreshVisuals();
+                RefreshSellAmount();
             }
             catch (Exception ex)
             {
@@ -236,6 +250,13 @@ namespace ReclaimerCrewTracker
             set { SetValue(ProtectionBackgroundProperty, value); }
         }
         public static readonly DependencyProperty ProtectionBackgroundProperty = DependencyProperty.Register("ProtectionBackground", typeof(Brush), typeof(MainWindow), new PropertyMetadata(Brushes.Transparent));
+
+        public Brush CalculationsBackground
+        {
+            get { return (Brush)GetValue(CalculationsBackgroundProperty); }
+            set { SetValue(CalculationsBackgroundProperty, value); }
+        }
+        public static readonly DependencyProperty CalculationsBackgroundProperty = DependencyProperty.Register("CalculationsBackground", typeof(Brush), typeof(MainWindow), new PropertyMetadata(Brushes.Transparent));
 
         // ------------- StartStop / Running|Stopped -------------
 
@@ -343,6 +364,46 @@ namespace ReclaimerCrewTracker
         public ObservableCollection<string> NamesList { get; private set; }
 
         // -------------------------- Private Methods --------------------------
+
+        private void RefreshSellAmount()
+        {
+            decimal total;
+
+            if (_calculations.UseForFinal)
+            {
+                lblSellAmt.Visibility = Visibility.Visible;
+                txtSellAmt.Visibility = Visibility.Collapsed;
+
+                total = _calculations.Sum;
+                lblSellAmt.Text = _calculations.Sum.ToString();
+            }
+            else
+            {
+                txtSellAmt.Visibility = Visibility.Visible;
+                lblSellAmt.Visibility = Visibility.Collapsed;
+
+                if (string.IsNullOrWhiteSpace(txtSellAmt.Text))
+                {
+                    total = 0m;
+                    txtSellAmt.Effect = null;
+                }
+                else if (decimal.TryParse(txtSellAmt.Text, out decimal amount))
+                {
+                    total = amount;
+                    txtSellAmt.Effect = null;
+                }
+                else
+                {
+                    total = 0m;
+                    txtSellAmt.Effect = _errorEffect;
+                }
+            }
+
+            NetAmount = total * 0.995m;
+            NetAmountDisplay = NetAmount.ToString("N0");
+
+            RefreshVisuals();
+        }
 
         private void RefreshVisuals()
         {
