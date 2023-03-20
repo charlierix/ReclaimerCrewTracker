@@ -94,6 +94,7 @@ namespace ReclaimerCrewTracker
                 _salvage.TabColor = SalvageBackground;
                 _salvage.ComboBoxTouched += ComboBoxTouched;
                 _salvage.TimeAdjustmentTouched += TimeAdjustmentTouched;
+                _salvage.Members.CollectionChanged += Members_CollectionChanged;
                 salvage.DataContext = _salvage;
 
                 _protection = new Crew() { Parent = this };
@@ -101,6 +102,7 @@ namespace ReclaimerCrewTracker
                 _protection.TabColor = ProtectionBackground;
                 _protection.ComboBoxTouched += ComboBoxTouched;
                 _protection.TimeAdjustmentTouched += TimeAdjustmentTouched;
+                _protection.Members.CollectionChanged += Members_CollectionChanged;
                 protection.DataContext = _protection;
 
                 _calculations = new Calculations();
@@ -214,6 +216,21 @@ namespace ReclaimerCrewTracker
                     ToArray();
 
                 SaveNames(names);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Members_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            try
+            {
+                if (!_initialized)
+                    return;
+
+                RefreshVisuals();
             }
             catch (Exception ex)
             {
@@ -415,10 +432,7 @@ namespace ReclaimerCrewTracker
             _salvage.UpdateTotalTimeDisplay(times, now);
             _protection.UpdateTotalTimeDisplay(times, now);
 
-            double total_salvage = _salvage.Members.Sum(o => o.TotalTimeSeconds);
-            double total_protection = _protection.Members.Sum(o => o.TotalTimeSeconds);
-
-            if ((total_salvage + total_protection).IsNearZero())
+            if (_salvage.Members.Count + _protection.Members.Count == 0)
             {
                 foreach (var member in _salvage.Members.Concat(_protection.Members))
                     member.Amount = 0;
@@ -426,21 +440,40 @@ namespace ReclaimerCrewTracker
                 return;
             }
 
-            decimal amount_salvage = NetAmount * Convert.ToDecimal(total_salvage / (total_salvage + (total_protection * ProtectPercent)));
-            decimal amount_protection = NetAmount - amount_salvage;
+            double total_salvage = _salvage.Members.Sum(o => o.TotalTimeSeconds);
+            double total_protection = _protection.Members.Sum(o => o.TotalTimeSeconds);
 
-            foreach (var member in _salvage.Members)
+            if ((total_salvage + total_protection).IsNearZero())
             {
-                member.Amount = total_salvage.IsNearZero() ?        // can't divide by zero
-                    0 :
-                    amount_salvage * Convert.ToDecimal(member.TotalTimeSeconds / total_salvage);
+                // No time, just divide by member count
+                decimal amount_salvage = NetAmount * Convert.ToDecimal(_salvage.Members.Count / (_salvage.Members.Count + (_protection.Members.Count * ProtectPercent)));
+                decimal amount_protection = NetAmount - amount_salvage;
+
+                foreach (var member in _salvage.Members)
+                    member.Amount = amount_salvage / _salvage.Members.Count;
+
+                foreach (var member in _protection.Members)
+                    member.Amount = amount_protection / _protection.Members.Count;
             }
-
-            foreach (var member in _protection.Members)
+            else
             {
-                member.Amount = total_protection.IsNearZero() ?        // can't divide by zero
-                    0 :
-                    amount_protection * Convert.ToDecimal(member.TotalTimeSeconds / total_protection);
+                // Distribute according to relative time
+                decimal amount_salvage = NetAmount * Convert.ToDecimal(total_salvage / (total_salvage + (total_protection * ProtectPercent)));
+                decimal amount_protection = NetAmount - amount_salvage;
+
+                foreach (var member in _salvage.Members)
+                {
+                    member.Amount = total_salvage.IsNearZero() ?        // can't divide by zero
+                        0 :
+                        amount_salvage * Convert.ToDecimal(member.TotalTimeSeconds / total_salvage);
+                }
+
+                foreach (var member in _protection.Members)
+                {
+                    member.Amount = total_protection.IsNearZero() ?        // can't divide by zero
+                        0 :
+                        amount_protection * Convert.ToDecimal(member.TotalTimeSeconds / total_protection);
+                }
             }
         }
 
