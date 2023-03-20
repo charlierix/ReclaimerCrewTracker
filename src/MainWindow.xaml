@@ -36,7 +36,7 @@
             <!-- Protection Percent -->
             <StackPanel Grid.Column="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,30,0">
                 <StackPanel.ToolTip>
-                    <TextBlock>This can be used to give a reduced percent to the protection ships<LineBreak/><LineBreak/>You would only want to do this if there are multiple salvage ships<LineBreak/>protected at the same time</TextBlock>
+                    <TextBlock>This can be used to give a reduced percent to the protection ships<LineBreak/><LineBreak/>You would only want to do this if there are multiple salvage ships<LineBreak/>protected at the same time<LineBreak/><LineBreak/>50% would mean protection people get 50% of what salvage people<LineBreak/>get</TextBlock>
                 </StackPanel.ToolTip>
                 <Label Content="protect %"/>
                 <TextBox x:Name="txtProtectPercent" MinWidth="40" VerticalContentAlignment="Center" Text="100" TextChanged="txtProtectPercent_TextChanged"/>
